@@ -8,6 +8,7 @@ import sys
 
 import requests
 
+
 def get_urls():
     """Retrieve all URLs from root AVB page"""
     root_url = "https://archives.bruxelles.be/bulletins/date"
@@ -22,46 +23,57 @@ def get_urls():
     print(f"{len(urls)} PDF files found")
     return urls
 
-def download(urls, offset=0):
-    """Dowloading all files starting from offset"""
-    for url in urls[offset:]:
-        filename = url.split("/")[-1]
-        print(f"Dowloading {filename}...")
-        start_time = time.time()
-        response = requests.get(url)
-        print(f"   done in {(time.time() - start_time):.1f} seconds")
-        Path("data/pdf").mkdir(parents=True, exist_ok=True)
-        with open(f"data/pdf/{filename}", 'wb') as f:
-            f.write(response.content)
 
-def check(urls):
-    """Check if all files have been downloaded"""
-    ok_count = 0
+def get_filenames_from_urls(urls):
+    """ Returns a list of filenames from a list of urls"""
+    return [url.split("/")[-1] for url in urls]
+
+
+def get_undownloaded_files(urls, already_downloaded):
+    """ Returns a list of undownloaded files"""
+    diff = list(
+        set(urls) - set(already_downloaded)
+    )
+    return diff
+
+
+def download(urls, filenames, downloads):
+    """Dowloading files which weren't already"""
+    undownloaded = get_undownloaded_files(filenames, downloads)
     for url in urls:
         filename = url.split("/")[-1]
-        downloads = os.listdir('data/pdf')
-        if filename not in downloads:
-            print(f"{filename} is missing!")
-        else:
-            ok_count += 1
-    print(f"{ok_count} PDFs found on {len(urls)}!")
+        if filename in undownloaded:
+            print(f"Dowloading {filename}...")
+            start_time = time.time()
+            response = requests.get(url)
+            print(f"   done in {(time.time() - start_time):.1f} seconds")
+            with open(f"data/pdf/{filename}", 'wb') as f:
+                f.write(response.content)
+
+
+def check(filenames, downloads):
+    """Check if all files have been downloaded"""
+    diff = get_undownloaded_files(filenames, downloads)
+    for missing_file in diff:
+        print(f"{missing_file} is missing!")
+    print(f"{len(diff)} PDFs missing out of {len(filenames)}!")
+
 
 if __name__ == "__main__":
-    all_urls = get_urls()
     try:
         task = sys.argv[1]
     except IndexError:
         print("No task provided, please use either 'download' or 'check'")
         sys.exit(1)
+    all_urls = get_urls()
+    Path("data/pdf").mkdir(parents=True, exist_ok=True)
+    filenames = get_filenames_from_urls(all_urls)
+    downloads = os.listdir('data/pdf')
     if task == "download":
-        try:
-            start_from = int(sys.argv[2])
-        except IndexError:
-            start_from = 0
-        download(all_urls, start_from)
-        check(all_urls)
+        download(all_urls, filenames, downloads)
+        check(filenames, downloads)
     elif task == "check":
-        check(all_urls)
+        check(filenames, downloads)
     else:
         print("Unknown task, please use either 'download' or 'check'")
         sys.exit(1)
