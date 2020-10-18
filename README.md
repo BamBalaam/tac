@@ -2,34 +2,31 @@
 
 Course material for "Traitement automatique de corpus" (STIC-B545) taught at [ULB](https://ulb.be)
 
-Caution: Python 3.6 or higher required to handle [f-strings](https://www.python.org/dev/peps/pep-0498/) (3.7 or 3.8 is better)
+## Module 1 (rewritten scripts)
 
-It is recommended to run this code in a virtual environment:
+### s2_sparql.py
 
-```bash
-git clone git@github.com:madewild/tac.git
-cd tac
-pip install virtualenv
-virtualenv venv --python=python3
-source venv/bin/activate
-which pip
-```
+TODO
 
-Then install Python dependencies with `pip install -r requirements.txt`
+### s3_api.py
 
-You can use either the scripts (\*.py) or the Jypyter Notebooks (\*.ipynb)
+Query two datasets in the [Open Data Brussels](https://opendata.bruxelles.be/page/home/).
 
-## Module 1
+Usage:
 
-`s1_sql.py`: querying a simple relational database
+`python module1/s3_api.py (population | bourgmestres)`
 
-`s2_sparql.py`: querying the Wikidata SPARQL endpoint
+### s4_scrape.py
 
-`s3_api.py`: playing with OpenStreetMap and EUcountries APIs
+Scraping the AVB to retrieve 2833 PDF bulletins.
 
-`s4_scrape.py`: scraping the AVB to retrieve 2833 PDF bulletins
+If the script breaks or is closed by the user, next run will only download missing files.
 
-## Module 2
+Usage:
+
+`python module1/s4_scrape.py (download | check)`
+
+## Module 2 (original scripts)
 
 `s1_convert.sh`: bash script to convert PDFs to TXTs, move them to dedicated folder and aggregate them in single big text file
 
@@ -37,7 +34,7 @@ You can use either the scripts (\*.py) or the Jypyter Notebooks (\*.ipynb)
 
 `s3_freq.py`: basic frenquency analysis, hapaxes, long words...
 
-## Module 3
+## Module 3 (original scripts)
 
 ### Keyword extraction
 
@@ -55,7 +52,7 @@ Install SpaCy from requirements then run this command to download French model: 
 
 `s4_sentiment.py`: analyse positive/negative sentences with textblob
 
-## Module 4
+## Module 4 (original scripts)
 
 `classification.py`: supervised classification of 20 newsgroups
 
@@ -67,13 +64,13 @@ Install SpaCy from requirements then run this command to download French model: 
 
 `model_explorer.py`: explore similarity between vectors
 
-## Module 5
+## Module 5 (original scripts)
 
 `language_detection`: language identification with langid
 
 `anonymization.py`: de-identification of data with Faker
 
-## Module 6
+## Module 6 (original scripts)
 
 `extraction.py`: extract text from various file types
 
