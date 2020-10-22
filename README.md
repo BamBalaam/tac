@@ -6,7 +6,12 @@ Course material for "Traitement automatique de corpus" (STIC-B545) taught at [UL
 
 ### s2_sparql.py
 
-TODO
+Get information about the Belgian Monarchy through an interactive menu.
+Queries available data from [Wikidata](https://www.wikidata.org).
+
+Usage:
+
+`python module1/s2_sparql.py`
 
 ### s3_api.py
 
