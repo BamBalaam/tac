@@ -4,9 +4,10 @@ from collections import defaultdict
 import sys
 
 import spacy
-from spacy.lang.fr.examples import sentences 
+from spacy.lang.fr.examples import sentences
 
 nlp = spacy.load('fr_core_news_sm')
+
 
 def test():
     """Basic test on sample sentences"""
@@ -20,8 +21,14 @@ def test():
         else:
             print(f"'{doc.text}' contains no entities")
 
-def search():
-    text = open("data/all.txt").read()[:1000000]
+
+def search(year):
+    path = f"module3/results/{year}.txt"
+    try:
+        text = open(path).read()[:1000000]
+    except FileNotFoundError:
+        print(f"File '{path}' not found.")
+        sys.exit(0)
     doc = nlp(text)
     people = defaultdict(int)
     for ent in doc.ents:
@@ -31,12 +38,17 @@ def search():
     for person, freq in sorted_people[:10]:
         print(f"{person} appears {freq} times in the corpus")
 
+
 if __name__ == "__main__":
     try:
         if sys.argv[1] == "test":
             test()
         elif sys.argv[1] == "search":
-            search()
+            try:
+                year = sys.argv[2]
+                search(year)
+            except IndexError:
+                print("Please add a year to parse (i.e. s3_ner.py search YYYY).")
         else:
             print("Unknown option, please use either 'test' or 'search'")
     except IndexError:
