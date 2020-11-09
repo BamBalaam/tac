@@ -39,19 +39,53 @@ Usage:
 
 `s3_freq.py`: basic frenquency analysis, hapaxes, long words...
 
-## Module 3 (original scripts)
+## Module 3 (rewritten scripts)
 
 ### Keyword extraction
 
-`s1_keyword.py`: using YAKE to extract French keywords in each text file
+#### s1_keyword.py
 
-`s2_wordcloud.sh`: generating a wordcloud for a given year (calling `filter.py` in the background)
+Extract French keywords in text files converted from PDFs (see [Module 2](#module-2-original-scripts)).
+
+Searches, by default, bigrams or higher for the year 1955 (because we had to pick a year for the project). Optionally, other values can be picked through arguments.
+
+Usage:
+
+```
+python module3/s1_keywords.py -h
+
+usage: s1_keywords.py [-h] [--year YEAR] [--ngrams NGRAMS]
+
+Extract keywords from AVB bulletins (in txt form).
+
+optional arguments:
+  -h, --help       show this help message and exit
+  --year YEAR      Year to extract from (default: 1955, because we had to
+                   chose one)
+  --ngrams NGRAMS  N-grams or higher to research (default: bigrams or higher)
+```
+
+#### s2_wordcloud.sh
+
+Generate a wordcloud for a given year (calling `filter.py` in the background).
+
+Usage:
+
+`./module3/s2_wordcloud.sh YEAR`
 
 ### Named-entity recognition
 
+Perform named-entity recognition (NER) with SpaCy FR model.
+
+Requirements:
+
 Install SpaCy from requirements then run this command to download French model: `python -m spacy download fr_core_news_sm`
 
-`s3_ner.py`: perform NER with SpaCy FR model
+Usage:
+
+```
+python module3/s3_ner.py YYYY (year)
+```
 
 ### Sentiment analysis
 
